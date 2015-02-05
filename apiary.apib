@@ -1,0 +1,1603 @@
+FORMAT: 1A
+
+HOST: https://api.mycontacts.io/
+
+# Interact
+
+# Interact API Documentation
+
+The Interact API is based on REST principles, all you need to use it is your mycontacts.io account. You must be authenticated and call HTTPs requests on the URLs listed below.
+
+This documentation covers the core resources you can used to manipulate objects on the Interact Platform. Review the information basic instructions if you are new to APIs.
+
+>**Note:** We strongly recommened users of the documentation to cross check the response structure by running an actual call API calls . This faclity is provided in the below documentation.
+We strongly discourage customers from using the apiary Traffic Inspector. Any information you submit through Traffic Inspector is routed through a 3rd party, and is unsecured. If you choose to use Traffic Inspector against our recommendation, use your Interact TESTING credentials for API calls.
+
+##Allowed HTTPs requests:
+
+- `POST` - Creates or updates a resource
+- `PUT` - Updates a resource
+- `GET` - Retrieves a resource or list of resources
+- `DELETE` - Delete a resource
+
+##Typical Server Responses
+
+- 200 `OK` - The request was successful (some API calls may return 201 instead).
+- 201 `Created` - The request was successful and a resource was created.
+- 204 `No Content` - The request was successful but there is no representation to return (that is, the response is empty).
+- 400 `Bad Request` - The request could not be understood or was missing required parameters.
+- 401 `Unauthorized` - Authentication failed or user does not have permissions for the requested operation.
+- 403 `Forbidden` - Access denied.
+- 404 `Not Found` - Resource was not found.
+- 405 `Method Not Allowed` - Requested method is not supported for the specified resource.
+- 429 `Too Many Requests` - Exceeded Interact API limits. Pause requests, wait one minute, and try again. 
+- 503 `Service Unavailable` - The service is temporary unavailable (e.g. scheduled Platform Maintenance). Try again later.
+
+##Documentation Structure
+
+The documentation of each API call is structured in the following way:
+
+- `Title` - The name of the API call.
+- `Link to Example` - Link to view a working prototype and also to try out the endpoint on Mock and Production servers.
+
+    Example:
+    
+    -   To access the sample endpoint click on a similar link shown below relative to the API
+        
+        <img src="http://mycontacts.io/images/Link.PNG"/>
+    
+    -   Users have the option to choose the server and programming language of their choice.
+        
+         <img src="http://mycontacts.io/images/Example.PNG"/>
+        
+    -   Users can make real time API calls by clicking on "Try" and changing the required header and body parameters.
+
+         <img src="http://mycontacts.io/images/Run.PNG"/>    
+        
+- `Method` - The request type –DELETE | GET | POST | PUT
+- `URL` - The URL structure – path only, no root url
+- `Header Attributes` - Header attributes with names and values
+- `URL Params` - URL parameters if exist, specified in accordance with name mentioned in URL section
+- `Data Params` - Payload for POST and PUT requests with data types, optional attributes and nodes are in lighter color
+- `Success Response` - HTTP return code and response data with data types, optional attributes and nodes are in lighter color. The entity attribute contains the whole object
+- `Error Response` - Possible HTTP return codes and response data with data types, optional attributes and nodes are in lighter color
+
+`Tip : For Endpoints that require an auth token, users can first obtain the auth token by running the login end point. The auth token recieved in the response can be used for the remaining calls. `
+
+# Group Authentication Process
+
+## Login [/v2/login]
+
+Login and authenticate for further API calls.
+
+### Login [POST]
+
+**Method** `POST`
+
+*  **URL:**
+
+        /v2/login
+
+*  **Header Attributes**
+
+        None
+  
+*  **URL Params**
+
+        None
+
+* **Data Params**
+    
+        None
+
+* **Success Response**
+
+  * **Code:**  
+  
+        `200 OK`
+  
+  * **Content:** 
+  
+            {
+              "user" :
+                {
+                  "id" : <integer>,
+                  "active" : true,
+                  "email" : <alphanumeric>,
+                  "companyId" : <integer>,
+                  "groups" : 
+                    [{
+                      "id" : <integer>,
+                      "name" : <alphanumeric>
+                    }],
+                  "roles" : [<alphanumeric>]
+                },
+            "token" : 
+                {
+                  "authToken" : <alphanumeric>,
+                  "expires" : <integer>
+            }
+            }
+        
+* **Error Response:**
+
+  * **Code:**
+  
+        `404 NOT FOUND` 
+        `401 UNAUTHORIZED`
+  * **Content:** 
+
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes:**<br>
+The authToken returned can be used for further API calls and must be passed in the header attribute of the request. The expires field indicates the time when this token will be invalidated. This time is represented by the number of milliseconds since the standard base time known as "the epoch", namely January 1, 1970, 00:00:00 GMT. Note that the token will be renewed with every API call.
+
+
++ Request (application/json)
+    + Body
+
+            {
+                "username" : "test@interact.io",
+                "password" : "iwonttellyou",
+                "scope" : "device app"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            [{
+               "user" :
+                    {
+                      "id" : 1,
+                      "active" : true,
+                      "email" : "test@interact.io",
+                      "companyId" : 21,
+                      "groups" : 
+                        [{
+                          "id" : 12,
+                          "name" : "test"
+                        }],
+                      "roles" : ""
+                    },
+                  "token" : 
+                    {
+                      "authToken" : "gfUH43trfdkjg34",
+                      "expires" : 1231213
+                    }
+            }] 
+            
+## Logout [/v2/logout]
+
+### Logout [POST]
+Logout and invalidate the authentication token.
+
+* **Method** `POST`
+
+*  **URL**
+
+        /v2/logout
+
+*  **Header Attributes:**
+
+        None
+  
+*  **URL Params**
+
+        None
+
+* **Data Params**
+    
+       `{"authToken" : <alphanumeric>}`
+
+* **Success Response**
+
+  * **Code**  
+  
+        `200 OK`
+  
+  * **Content** 
+  
+        `{"code" : 200, "devmsg" : "success"}`
+
+* **Error Response:**
+
+  * **Code**
+  
+        `404 NOT FOUND` 
+        `401 UNAUTHORIZED`
+
+  * **Content:** 
+  
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes:**<br>
+None
+
+
++ Request (application/json)
+    + Body
+
+            {
+                "authToken" : "gfUH43trfdkjg34"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            [{
+               "code" : 200,
+               "devmsg" :"success"
+            }]
+
+#   Group Deals
+
+## Deal Creation and Retrieval  [/v2/deals]
+
+### Create Deal [PUT] 
+Create a deal.
+
+
+**Method:** `PUT`
+
+*  **URL:**
+
+        /v2/deals
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        None
+
+* **Data Params**
+
+        {
+          "name" : <alphanumeric>,
+          "value" : <integer>,
+          "currency" : <alphanumeric>,
+          "hot" : <boolean>,
+          "relatedTo" : 
+            {
+              "id" : <integer>
+            },
+          "source" : <enum(website,referral,word_of_mouth,cold_call)>,
+          "stage" : <enum(incoming,qualified,quote,closing,won,lost,unqualified)>
+        }
+
+
+* **Success Response**
+
+  * **Code** 
+        
+        `201 CREATED`
+
+  * **Content**
+
+        `{"code" : 201, "entity" : <deal>, "devmsg" : "success"}`
+ 
+* **Error Response**
+
+  * **Code** 
+  
+        `400 BAD REQUEST`
+        `401 UNAUTHORIZED`
+        `403 FORBIDDEN`
+        
+        
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric}`
+
+* **Notes**<br>  
+None
+
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+    + Body
+    
+            {"name":"Apple","value":100000,"currency":"usd","stage":"incoming","source":"website","hot":true,"relatedTo":{"id":129746}}
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {"code":201,"devmsg":"success","entity":{"id":2609,"created":1422554070335,"currency":"usd","hot":true,"name":"Apple","relatedTo":{"id":129746,"displayName":"John Doe"},"source":"website","stage":"incoming","updated":1422554070335,"value":100000}}
+
+
+### Read a List of Deals [GET]
+Returns all the deals associated to the requesting user.
+
+**Method:** `GET`
+
+*  **URL:**
+
+        /v2/deals
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        None
+
+* **Data Params**
+
+        None
+
+
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+            [{
+              "id" : <integer>,
+              "name" : <alphanumeric>,
+              "value" : <integer>,
+              "currency" : <alphanumeric>,
+              "hot" : <boolean>,
+              "relatedTo" : 
+                {
+                  "id" : <integer>,
+                  "name" : <alphanumeric>
+                },
+              "source" : <enum(website, referral,word_of_mouth,cold_call)>,
+              "stage" : <enum(incoming,qualified,quote,closing,won,lost,unqualified)>,)>
+            }]
+ 
+* **Error Response**
+
+  * **Code** 
+  
+        `401 UNAUTHORIZED`
+
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric}`
+
+* **Notes**<br>  
+None
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+    
++ Response 200 (application/json)
+
+    + Body
+    
+            [{
+              "id" : 12,
+              "name" : "Apple Deal",
+              "value" : 10000,
+              "currency" : "USD",
+              "hot" : yes,
+              "relatedTo" : 
+                {
+                  "id" : 317,
+                }                },
+              "source" : "word_of_mouth",
+              "stage" : "incoming"
+            }]
+              
+## Deal Specific Operations  [/v2/deals/{id}]
+
+### Read a Deal [GET]
+Retrieve data of a particular deal
+
+**Method:** `GET`
+
+*  **URL:**
+
+         /v2/deals/{id}
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+
+* **Data Params**
+
+        None
+
+
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+            [{
+              "id" : <integer>,
+              "name" : <alphanumeric>,
+              "value" : <integer>,
+              "currency" : <alphanumeric>,
+              "hot" : <boolean>,
+              "relatedTo" : 
+                {
+                  "id" : <integer>,
+                  "name" : <alphanumeric>
+                },
+              "source" : <enum(website, referral,word_of_mouth,cold_call)>,
+              "stage" : <enum(incoming,qualified,quote,closing,won,lost,unqualified)>,)>
+            }]
+ 
+* **Error Response**
+
+  * **Code** 
+  
+        `401 UNAUTHORIZED`
+
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>  
+None
+
++ Parameters
+    + id (required, integer, `481`) ... Example Deal Id
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+              "id": 2605,
+              "created": 1422024953000,
+              "currency": "usd",
+              "name": "Apple",
+              "relatedTo": {
+                "id": 129456,
+                "displayName": "Bas C"
+              },
+              "source": "referral",
+              "stage": "incoming",
+              "updated": 1422024953000,
+              "value": 1900000
+            }    
+              
+
+
+### Update A Deal [POST]
+Update a particular Deal
+
+**Method:** `POST`
+
+*  **URL:**
+
+        /v2/deals/{id}
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+       
+
+* **Data Params**
+
+        {
+          "name" : <alphanumeric>,
+          "value" : <integer>,
+          "currency" : <alphanumeric>,
+          "hot" : <boolean>,
+          "relatedTo" : 
+        {
+              "id" : <integer>
+            },
+          "source" : <enum(website,referral,word_of_mouth,cold_call)>,
+          "stage" : <enum(incoming,qualified,quote,closing,won,lost,unqualified)>,)>
+        }
+
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+        `{"code" : 200, "entity" : <deal>, "devmsg" : "success"}`
+ 
+* **Error Response**
+
+  * **Code** 
+        `400 BAD REQUEST`
+        `401 UNAUTHORIZED`
+        `403 FORBIDDEN`
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>  
+None
+
++ Parameters
+    + id (required, integer, `2606`) ... Example Deal Id
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+      
+    + Body
+    
+            {"name":"ILink","value":125000,"currency":"usd","stage":"quote","source":"referral","hot":"","relatedTo":{"id":129537},"id":2606}]       
+            
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {"code":200,"devmsg":"success","entity":{"id":2606,"created":1422024993000,"currency":"usd","name":"ILink","relatedTo":{"id":129537,"displayName":"Mike J"},"source":"referral","stage":"quote","updated":1422024993000,"value":125000}}
+
+
+### Delete a Deal [DELETE]
+Retrieve data of a particular deal
+
+**Method:** `GET`
+
+*  **URL:**
+
+         /v2/deals/{id}
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+
+* **Data Params**
+
+        None
+
+
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+            [{
+              "id" : <integer>,
+              "name" : <alphanumeric>,
+              "value" : <integer>,
+              "currency" : <alphanumeric>,
+              "hot" : <boolean>,
+              "relatedTo" : 
+                {
+                  "id" : <integer>,
+                  "name" : <alphanumeric>
+                },
+              "source" : <enum(website, referral,word_of_mouth,cold_call)>,
+              "stage" : <enum(incoming,qualified,quote,closing,won,lost,unqualified)>,)>
+            }]
+ 
+* **Error Response**
+
+  * **Code** 
+  
+        `401 UNAUTHORIZED`
+
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>  
+None
+
++ Parameters
+    + id (required, integer, `481`) ... Example Deal Id
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+              "id": 2605,
+              "created": 1422024953000,
+              "currency": "usd",
+              "name": "Apple",
+              "relatedTo": {
+                "id": 129456,
+                "displayName": "Bas C"
+              },
+              "source": "referral",
+              "stage": "incoming",
+              "updated": 1422024953000,
+              "value": 1900000
+            }
+
+
+
+
+## Deals Associated with a Contact [/v2/contacts/{id}/deals] 
+
+### Read a List of Deals Associated with a Contact [GET]
+Retrieve a list of deals associated with a particular contact
+
+
+**Method:** `GET`
+
+*  **URL:**
+
+        /v2/contacts/{id}/deals
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+        
+* **Data Params**
+
+        None
+
+
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+            [{
+              "id" : <integer>,
+              "name" : <alphanumeric>,
+              "value" : <integer>,
+              "currency" : <alphanumeric>,
+              "hot" : <boolean>,
+              "relatedTo" : 
+                {
+                  "id" : <integer>,
+                  "name" : <alphanumeric>
+                },
+              "source" : <enum(website, referral,word_of_mouth,cold_call)>,
+              "stage" : <enum(incoming,qualified,quote,closing,won,lost,unqualified)>,)>
+            }]
+ 
+* **Error Response**
+
+  * **Code** 
+  
+        `401 UNAUTHORIZED`
+
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric}`
+
+* **Note** 
+
+        None
+  
++ Parameters
+    + id (required, integer, `371`) ... Example Contact Id
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+    
++ Response 200 (application/json)
+
+    + Body
+    
+            [{
+              "id" : 12,
+              "name" : "Apple Deal",
+              "value" : 10000,
+              "currency" : "USD",
+              "hot" : yes,
+              "relatedTo" : 
+                {
+                  "id" : 317,
+                }                },
+              "source" : "word_of_mouth",
+              "stage" : "incoming"
+            }]
+
+#  Group Campaigns
+
+## Campaign Creation and Retrieval [/v2/campaigns]
+
+### Create Campaign. [POST]
+
+Create a new campaign.
+
+**Method:** `POST`
+
+*  **URL:**
+
+        /v2/campaigns
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        None
+       
+* **Data Params**
+
+        {"dynamic":<boolean>,
+        "mode":"INTERACT_AND_QUALIFY",
+        "startDate":<alphanumeric>,
+        "contacts":[<contact>],
+        "partecipants":[{"id":<alphanumeric>}],
+        "reviewers":[<contact>],
+        "activeStatuses":[<alphanumeric>],
+        "inactiveStatuses":[<alphanumeric>],
+        "name":<alphanumeric>,
+        "description":<alphanumeric>
+        }
+
+
+       
+
+        
+* **Success Response**
+
+  * **Code** 
+        
+        `201 CREATED`
+
+  * **Content**
+
+        `{
+            "id":<integer>,
+            "name":<alphanumeric>,"description":<alphanumeric>,
+            "mode":"INTERACT_AND_QUALIFY","dynamic":<boolean>,
+             "startDate":<integer>,"endDate":<integer>,
+             "activeStatuses":[<alphanumeric>],"inactiveStatuses":[<alphanumeric>],
+             "contacts":[<contact>],"interactions":null,"completion":<integer>,
+             "owner":{"id":<alphanumeric>,
+             "username":<alphanumeric>,"firstName":<alphanumeric>,"lastName":<alphanumeric>,
+             "email":<alphanumeric>,"phone":<integer>,"role":<integer>,"organizationId":<integer>},
+             "reviewers":[],"partecipants":[{"id":<alphanumeric>,"username":<alphanumeric>,"firstName":<alphanumeric>,
+             "lastName":<alphanumeric>,"email":<alphanumeric>,"phone":<integer>,"role":<integer>,"organizationId":<integer>}]}`
+ 
+
+
+
+* **Error Response**
+
+  * **Code** 
+        `400 BAD REQUEST`
+        `401 UNAUTHORIZED`
+        `403 FORBIDDEN`
+        
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Note**<br> 
+None
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+    + Body
+    
+            {"dynamic":true,"mode":"INTERACT_AND_QUALIFY",
+            "startDate":"2015-02-04",
+            "contacts":[],
+            "partecipants":[{"id":"adwait@interact.io"}],
+            "reviewers":[],
+            "activeStatuses":["Open"],
+            "inactiveStatuses":["Closed"],
+            "name":"Test",
+            "description":"Test"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+            "id":15,
+            "name":"Test","description":"Test",
+            "mode":"INTERACT_AND_QUALIFY","dynamic":true,
+             "startDate":1423008000000,"endDate":null,
+             "activeStatuses":["Open"],"inactiveStatuses":["Closed"],
+             "contacts":[],"interactions":null,"completion":null,
+             "owner":{"id":"adwait@interact.io",
+             "username":null,"firstName":null,"lastName":null,
+             "email":null,"phone":null,"role":1,"organizationId":14},
+             "reviewers":[],"partecipants":[{"id":"adwait@interact.io","username":null,"firstName":null,"lastName":null,"email":null,"phone":null,"role":0,"organizationId":null}]}`
+ 
+
+              
+### Retrieve all active campaigns [GET]
+
+Gets all active campaigns, i.e. campaigns that are currently running.
+
+**Method:** `GET`
+
+*  **URL:**
+
+         /v2/campaigns
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+         None
+       
+* **Data Params**
+
+        None
+    
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+            [{
+            "id":<integer>,
+            "name":<alphanumeric>,"description":<alphanumeric>,
+            "mode":"INTERACT_AND_QUALIFY","dynamic":<boolean>,
+             "startDate":<integer>,"endDate":<integer>,
+             "activeStatuses":[<alphanumeric>],"inactiveStatuses":[<alphanumeric>],
+             "contacts":[<contact>],"interactions":null,"completion":<integer>,
+             "owner":{"id":<alphanumeric>,
+             "username":<alphanumeric>,"firstName":<alphanumeric>,"lastName":<alphanumeric>,
+             "email":<alphanumeric>,"phone":<integer>,"role":<integer>,"organizationId":<integer>},
+             "reviewers":[],"partecipants":[{"id":<alphanumeric>,"username":<alphanumeric>,"firstName":<alphanumeric>,
+             "lastName":<alphanumeric>,"email":<alphanumeric>,"phone":<integer>,"role":<integer>,"organizationId":<integer>}]}]
+            
+* **Error Response**
+
+  * **Code** 
+        
+        `401 UNAUTHORIZED`
+        
+        
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>  
+None
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+    
++ Response 200 (application/json)
+
+    + Body
+    
+            [{"id":16,"name":"Mycontacts","description":"Mycontacts","mode":null,"dynamic":true,"startDate":1423008000000,"endDate":null,"activeStatuses":["Open","Status1"],"inactiveStatuses":["Closed","Status2"],"contacts":[],"interactions":[],"completion":0.0,"owner":{"id":"adwait@interact.io","username":null,"firstName":null,"lastName":null,"email":null,"phone":null,"role":0,"organizationId":null},"reviewers":null,"partecipants":[{"id":"adwait@interact.io","username":null,"firstName":null,"lastName":null,"email":null,"phone":null,"role":0,"organizationId":null}]},{"id":15,"name":"Test","description":"Test","mode":null,"dynamic":true,"startDate":1423008000000,"endDate":null,"activeStatuses":["Open","Status1"],"inactiveStatuses":["Closed","Status2"],"contacts":[{"version":1,"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"company":null,"related":null,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"mobile","number":"+33751118780","location":"other"}],"name":{"firstName":"Saurabh France","fullName":null,"lastName":"2","title":"","middleName":"","suffix":null,"nickName":null},"websites":null,"tags":null,"profiles":[{"source":"aim","url":"undefined-string","username":"undefined-string","avatarUrl":"undefined-string"}],"lists":{"15":{"active":true,"currentStatus":"Open","updated":1423064990170}},"profileUrl":null,"title":"","firstName":"Saurabh France","lastName":"2","middleName":"","id":"129411","birthday":null,"photos":null,"updated":null,"profilePicture":null}],"interactions":[],"completion":0.0,"owner":{"id":"adwait@interact.io","username":null,"firstName":null,"lastName":null,"email":null,"phone":null,"role":0,"organizationId":null},"reviewers":null,"partecipants":[{"id":"adwait@interact.io","username":null,"firstName":null,"lastName":null,"email":null,"phone":null,"role":0,"organizationId":null}]}]  
+
+## Campaign Specific Operations [/v2/campaigns/{id}]
+
+### Read A Campaign [GET]
+
+Gets a particular campaign.
+
+
+**Method:** `GET`
+
+*  **URL:**
+
+        /v2/campaigns/{id}
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+       
+* **Data Params**
+
+        None
+    
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+            [{
+            "id":<integer>,
+            "name":<alphanumeric>,"description":<alphanumeric>,
+            "mode":"INTERACT_AND_QUALIFY","dynamic":<boolean>,
+             "startDate":<integer>,"endDate":<integer>,
+             "activeStatuses":[<alphanumeric>],"inactiveStatuses":[<alphanumeric>],
+             "contacts":[<contact>],"interactions":null,"completion":<integer>,
+             "owner":{"id":<alphanumeric>,
+             "username":<alphanumeric>,"firstName":<alphanumeric>,"lastName":<alphanumeric>,
+             "email":<alphanumeric>,"phone":<integer>,"role":<integer>,"organizationId":<integer>},
+             "reviewers":[],"partecipants":[{"id":<alphanumeric>,"username":<alphanumeric>,"firstName":<alphanumeric>,
+             "lastName":<alphanumeric>,"email":<alphanumeric>,"phone":<integer>,"role":<integer>,"organizationId":<integer>}]}]
+ 
+* **Error Response**
+
+  * **Code** 
+        
+        `401 UNAUTHORIZED`
+        `403 FORBIDDEN`
+        `404 NOT FOUND`
+        
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>   
+Base projections of a contact now contain a campaigns array. This array consists of mappings from a campaign ID to status values of that contact in the campaign with that ID. Example:
+"campaigns":{"2":{"active":true,"currentStatus":"OPEN","updated":1421158283601}}
+        
+
++ Parameters
+    + id (required, integer, `15`) ... Example Campaign Id
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+    
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+              "id": 15,
+              "name": "Test",
+              "description": "Test",
+              "mode": null,
+              "dynamic": true,
+              "startDate": 1423008000000,
+              "endDate": null,
+              "activeStatuses": [
+                "Open",
+                "Status1"
+              ],
+              "inactiveStatuses": [
+                "Closed",
+                "Status2"
+              ],
+              "contacts": [
+                {
+                  "version": 1,
+                  "privacy": "PUBLIC",
+                  "contactType": "PERSON",
+                  "companyName": null,
+                  "enrich": false,
+                  "sfdcDuplicate": false,
+                  "sfdcEnrich": false,
+                  "company": null,
+                  "related": null,
+                  "clientId": null,
+                  "source": "",
+                  "addresses": null,
+                  "emails": null,
+                  "phoneNumbers": [
+                    {
+                      "type": "mobile",
+                      "number": "+33751118780",
+                      "location": "other"
+                    }
+                  ],
+                  "name": {
+                    "firstName": "Saurabh France",
+                    "fullName": null,
+                    "lastName": "2",
+                    "title": "",
+                    "middleName": "",
+                    "suffix": null,
+                    "nickName": null
+                  },
+                  "websites": null,
+                  "tags": null,
+                  "profiles": [
+                    {
+                      "source": "aim",
+                      "url": "undefined-string",
+                      "username": "undefined-string",
+                      "avatarUrl": "undefined-string"
+                    }
+                  ],
+                  "lists": {
+                    "15": {
+                      "active": true,
+                      "currentStatus": "Open",
+                      "updated": 1423064990170
+                    }
+                  },
+                  "profileUrl": null,
+                  "title": "",
+                  "firstName": "Saurabh France",
+                  "lastName": "2",
+                  "middleName": "",
+                  "id": "129411",
+                  "birthday": null,
+                  "photos": null,
+                  "updated": null,
+                  "profilePicture": null
+                }
+              ],
+              "interactions": [],
+              "completion": null,
+              "owner": {
+                "id": "adwait@interact.io",
+                "username": null,
+                "firstName": null,
+                "lastName": null,
+                "email": null,
+                "phone": null,
+                "role": 0,
+                "organizationId": null
+              },
+              "reviewers": null,
+              "partecipants": [
+                {
+                  "id": "adwait@interact.io",
+                  "username": null,
+                  "firstName": null,
+                  "lastName": null,
+                  "email": null,
+                  "phone": null,
+                  "role": 0,
+                  "organizationId": null
+                }
+              ]
+            }
+            
+
+
+### Update Campaign Need to recheck [PUT]
+
+Update a particular campaign.
+
+
+**Method:** `PUT`
+
+*  **URL:**
+
+        /v2/campaigns/{id}
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+       
+* **Data Params**
+
+        {"id":15,"name":"Test","description":"Test","mode":null,"dynamic":true,"startDate":1423008000000,"endDate":null,"activeStatuses":["Open","Status1"],"inactiveStatuses":["Closed","Status2"],"contacts":[{"version":1,"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"company":null,"related":null,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"mobile","number":"+33751118780","location":"other"}],"name":{"firstName":"Saurabh France","fullName":null,"lastName":"2","title":"","middleName":"","suffix":null,"nickName":null},"websites":null,"tags":null,"profiles":[{"source":"aim","url":"undefined-string","username":"undefined-string","avatarUrl":"undefined-string"}],"lists":{"15":{"active":true,"currentStatus":"Open","updated":1423064990170}},"profileUrl":null,"title":"","firstName":"Saurabh France","lastName":"2","middleName":"","id":"129411","birthday":null,"photos":null,"updated":null,"profilePicture":null}],"interactions":[],"completion":0,"owner":{"id":"adwait@interact.io","username":null,"firstName":null,"lastName":null,"email":null,"phone":null,"role":0,"organizationId":null},"reviewers":null,"partecipants":[{"id":"adwait@interact.io","username":null,"firstName":null,"lastName":null,"email":null,"phone":null,"role":0,"organizationId":null}]}
+    
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+            [{
+            "id":<integer>,
+            "name":<alphanumeric>,"description":<alphanumeric>,
+            "mode":"INTERACT_AND_QUALIFY","dynamic":<boolean>,
+             "startDate":<integer>,"endDate":<integer>,
+             "activeStatuses":[<alphanumeric>],"inactiveStatuses":[<alphanumeric>],
+             "contacts":[<contact>],"interactions":null,"completion":<integer>,
+             "owner":{"id":<alphanumeric>,
+             "username":<alphanumeric>,"firstName":<alphanumeric>,"lastName":<alphanumeric>,
+             "email":<alphanumeric>,"phone":<integer>,"role":<integer>,"organizationId":<integer>},
+             "reviewers":[],"partecipants":[{"id":<alphanumeric>,"username":<alphanumeric>,"firstName":<alphanumeric>,
+             "lastName":<alphanumeric>,"email":<alphanumeric>,"phone":<integer>,"role":<integer>,"organizationId":<integer>}]}]
+ 
+* **Error Response**
+
+  * **Code** 
+        
+        `401 UNAUTHORIZED`
+        `403 FORBIDDEN`
+        `404 NOT FOUND`
+        
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>   
+None
+        
+
++ Parameters
+    + id (required, integer, `15`) ... Example Campaign Id
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+    
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+              "id": 15,
+              "name": "Test",
+              "description": "Test",
+              "mode": null,
+              "dynamic": true,
+              "startDate": 1423008000000,
+              "endDate": null,
+              "activeStatuses": [
+                "Open",
+                "Status1"
+              ],
+              "inactiveStatuses": [
+                "Closed",
+                "Status2"
+              ],
+              "contacts": [
+                {
+                  "version": 1,
+                  "privacy": "PUBLIC",
+                  "contactType": "PERSON",
+                  "companyName": null,
+                  "enrich": false,
+                  "sfdcDuplicate": false,
+                  "sfdcEnrich": false,
+                  "company": null,
+                  "related": null,
+                  "clientId": null,
+                  "source": "",
+                  "addresses": null,
+                  "emails": null,
+                  "phoneNumbers": [
+                    {
+                      "type": "mobile",
+                      "number": "+33751118780",
+                      "location": "other"
+                    }
+                  ],
+                  "name": {
+                    "firstName": "Saurabh France",
+                    "fullName": null,
+                    "lastName": "2",
+                    "title": "",
+                    "middleName": "",
+                    "suffix": null,
+                    "nickName": null
+                  },
+                  "websites": null,
+                  "tags": null,
+                  "profiles": [
+                    {
+                      "source": "aim",
+                      "url": "undefined-string",
+                      "username": "undefined-string",
+                      "avatarUrl": "undefined-string"
+                    }
+                  ],
+                  "lists": {
+                    "15": {
+                      "active": true,
+                      "currentStatus": "Open",
+                      "updated": 1423064990170
+                    }
+                  },
+                  "profileUrl": null,
+                  "title": "",
+                  "firstName": "Saurabh France",
+                  "lastName": "2",
+                  "middleName": "",
+                  "id": "129411",
+                  "birthday": null,
+                  "photos": null,
+                  "updated": null,
+                  "profilePicture": null
+                }
+              ],
+              "interactions": [],
+              "completion": null,
+              "owner": {
+                "id": "adwait@interact.io",
+                "username": null,
+                "firstName": null,
+                "lastName": null,
+                "email": null,
+                "phone": null,
+                "role": 0,
+                "organizationId": null
+              },
+              "reviewers": null,
+              "partecipants": [
+                {
+                  "id": "adwait@interact.io",
+                  "username": null,
+                  "firstName": null,
+                  "lastName": null,
+                  "email": null,
+                  "phone": null,
+                  "role": 0,
+                  "organizationId": null
+                }
+              ]
+            } 
+            
+
+## Add and Retrieve Contacts w.r.t a Campaign [/v2/campaigns/{id}/contacts]
+
+### Contact Addition to a Campaign [PUT]
+ 
+Add new contacts to a campaign with id {id}.
+
+**Method:** `PUT`
+
+*  **URL:**
+
+        /v2/campaigns/{id}/contacts
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+        
+* **Data Params**
+
+        
+        [{"id":<integer>}]
+    
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+        `[<contact id/s>]`
+ 
+* **Error Response**
+
+  * **Code** 
+        
+        `401 UNAUTHORIZED`
+        `403 FORBIDDEN`
+        `404 NOT FOUND`
+        
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>  
+None
+
++ Parameters
+    + id (required, integer, `16`) ... Example Campaign Id
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+    
+    + Body
+    
+            [{"id":129302},{"id":129341}]        
+    
++ Response 200 (application/json)
+
+    + Body
+    
+            ["129302", "129341"]
+
+
+### Retrieve Contacts Associated with a Campaign [GET]
+ 
+Get contacts from a campaign with id {id}.
+
+**Method:** `GET`
+
+*  **URL:**
+
+        /v2/campaigns/{id}/contacts
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+        
+* **Data Params**
+
+        
+        None
+    
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+        `[{<contact>}]`
+ 
+* **Error Response**
+
+  * **Code** 
+        
+        `401 UNAUTHORIZED`
+        `403 FORBIDDEN`
+        `404 NOT FOUND`
+        
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>  
+None
+
++ Parameters
+    + id (required, integer, `16`) ... Example Campaign Id
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+       
+    
++ Response 200 (application/json)
+
+    + Body
+    
+            [
+              {
+                "id": "129651",
+                "contactType": "PERSON",
+                "lastName": "arya",
+                "firstName": "kapil",
+                "companyName": null,
+                "currentStatus": "Open",
+                "currentStatusDuration": 1298077,
+                "lastInteraction": null,
+                "interactions": null,
+                "answers": []
+              },
+              {
+                "id": "129760",
+                "contactType": "PERSON",
+                "lastName": "Karmarkar",
+                "firstName": "Adwait",
+                "companyName": null,
+                "currentStatus": "Open",
+                "currentStatusDuration": 1298106,
+                "lastInteraction": null,
+                "interactions": null,
+                "answers": []
+              },
+              {
+                "id": "129302",
+                "contactType": "PERSON",
+                "lastName": "album..",
+                "firstName": "ABHISHEK .... has just updated his",
+                "companyName": null,
+                "currentStatus": "Open",
+                "currentStatusDuration": 2413049,
+                "lastInteraction": null,
+                "interactions": null,
+                "answers": []
+              }
+            ] 
+
+## Add and Retrieve Datapoints w.r.t a Campaign [/v2/campaigns/{id}/datapoints]
+
+### Datapoint Addition [POST]
+ 
+Add new datapoints to campaign with {id}.
+
+**Method:** `POST`
+
+*  **URL:**
+
+        /v2/campaigns/{id}/datapoints
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+        
+* **Data Params**
+
+        {"type":enum(<boolean>,<multi>,<text>), "datapointText":<alphanumeric>,"label":<alphanumeric>}
+ 
+    
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+        `None`
+ 
+* **Error Response**
+
+  * **Code** 
+        
+        `401 UNAUTHORIZED`
+        `403 FORBIDDEN`
+        `404 NOT FOUND`
+        
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>  
+None
+
++ Parameters
+    + id (required, integer, `16`) ... Example Campaign Id
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+    
+    + Body
+    
+            {"type":"text","datapointText":"Cost","label":"CS"}  
+    
++ Response 200 (application/json)
+
+### Retrieve Datapoints Associated with a Campaign [GET]
+ 
+Get contacts from a campaign with id {id}.
+
+**Method:** `GET`
+
+*  **URL:**
+
+        /v2/campaigns/{id}/contacts
+
+*  **Header Attributes:**
+
+        authToken (Required)
+  
+*  **URL Params**
+
+        id : <integer>
+        
+* **Data Params**
+
+        
+        None
+    
+* **Success Response**
+
+  * **Code** 
+        
+        `200 OK`
+
+  * **Content**
+
+        `[{"id":<integer>,"type":enum(<boolean>,<multi>,<text>),"campaignId":<integer>,"datapointText":<alphanumeric>,"label":<alphanumeric>,"parent":null}]]`
+ 
+* **Error Response**
+
+  * **Code** 
+        
+        `401 UNAUTHORIZED`
+        `403 FORBIDDEN`
+        `404 NOT FOUND`
+        
+  * **Content**
+        
+        `{"code" : <integer>, "error" : <integer>, "devmsg" : <alphanumeric>}`
+
+* **Notes**<br>  
+None
+
++ Parameters
+    + id (required, integer, `16`) ... Example Campaign Id
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+       
+    
++ Response 200 (application/json)
+
+    + Body
+    
+            [
+              [{"id":42,"type":"bool","campaignId":16,"datapointText":"Sales","label":"SL","parent":null},{"id":43,"type":"multi","campaignId":16,"datapointText":"Marketing","label":"M","choices":["c1","c2"],"parent":null}]
+            ]
