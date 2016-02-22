@@ -1,0 +1,229 @@
+FORMAT: 1A
+HOST: https://app-staging.mycontacts.io/api/v2
+
+#Interact Api
+
+# Group Login 
+
+##  /login
+
+### Login [POST]
+
++ Request (application/json)
+    + Body
+
+            {
+                "username" : "test@interact.io",
+                "password" : "iwonttellyou",
+                "client" : "apiary"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+              "firebaseAuthToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkIjp7InVpZCI6InVzcl8wdkJkNTR1Umc4MkVPdldQamRPR2ZDIn0sInYiOjAsImlhdCI6MTQyOTcyMDQ4OH0.muysih97LyG4f2_6N2BlEwwh0YaE8jGPlGvrXOfvQaI",
+              "token": {
+                "authToken": "kss_0vBfofkzdISqC0Jlg1gBTh",
+                "expires": 1429806869
+              },
+              "user": {
+                "id": "usr_0vBd54uRg82EOvWPjdOGfC",
+                "username": "adwait@interact.io",
+                "email": "adwait@interact.io",
+                "firstName": "Adwait",
+                "lastName": "Kamarkar",
+                "phoneNumber": null,
+                "timeZone": "Europe/Berlin",
+                "organizationId": "org_0vBd4rOx9Ge6qSEjYqmNQa",
+                "organizationName": "interact.io",
+                "dateCreated": 1429550633185,
+                "active": true,
+                "permissions": [
+                  "USER"
+                ]
+              }
+            }  
+            
+# Group Logout Process
+
+##  /logout
+
+### Logout [POST]
+
++ Request (application/json)
+    + Body
+
+            {
+                "authToken" : "gfUH43trfdkjg34"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+               "code" : 200,
+               "devmsg" :"success"
+            }
+
+#  Group Contacts API
+
+##  /contacts
+
+### Get all contacts [GET]
+
++ Parameters
+    + offset (optional, integer, `0`) ... Example Offset
+    + limit (optional, integer, `20`) ... Example limit
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {"data":[{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"work","number":"+4915218221418"}],"firstName":"Adwaittest123","lastName":"Adwait123","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZTPDTwruSgQS3qXFDL","websites":[],"tags":["test1234"],"profiles":[],"lists":[],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000qMCxyAAG","entityId":"003b000000qMCxyAAG","entityName":"CONTACT"}],"customFields":[],"displayName":"Adwaittest123 Adwait123","relatedTo":[{"id":"09fdba05-5711-4feb-b9da-0524a8f06b67","type":"COMPANY","displayName":"Test.com","creatorId":"usr_0vCSZTPDTwruSgQS3qXFDL","privacy":"PUBLIC"}],"id":"fe97bc91-0eb3-4728-aa6b-ba8f893ed988","birthday":null,"pictures":[],"updated":1433926391172,"created":1432749597225,"profilePicture":null,"favorite":false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"work","number":"+49789929"}],"firstName":"Aktest","lastName":"Aktest","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":null,"profiles":[],"lists":[],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000qpYkaAAE","entityId":"003b000000qpYkaAAE","entityName":"CONTACT"}],"customFields":[],"displayName":"Aktest Aktest","relatedTo":null,"id":"3286f6b5-86e4-4de5-86ac-00ad1c1074b8","birthday":null,"pictures":[],"updated":1433865899417,"created":1433151809182,"profilePicture":null,"favorite":false},{"privacy":"PRIVATE","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":null,"firstName":"Kobe","lastName":"Bryant","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":null,"profiles":[],"lists":[],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Kobe Bryant","relatedTo":null,"id":"1f319622-dd1e-4d2a-9aca-53ef4765e312","birthday":null,"pictures":[],"updated":1433865946261,"created":1433406499439,"profilePicture":null,"favorite":false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"work","number":"+9686859659"}],"firstName":"Common1","lastName":"Coommon2","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":null,"profiles":[],"lists":[],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000qspRXAAY","entityId":"003b000000qspRXAAY","entityName":"CONTACT"}],"customFields":[],"displayName":"Common1 Coommon2","relatedTo":null,"id":"f01a36f7-bab6-49dc-b512-013e817d7e8c","birthday":null,"pictures":[],"updated":1433872606199,"created":1433872598505,"profilePicture":null,"favorite":false},{"privacy":"PRIVATE","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":"","addresses":null,"emails":[{"type":"HOME","email":"sagar07.knight@gmail.com"}],"phoneNumbers":null,"firstName":"Sagar","lastName":"Jariwala","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":[],"tags":null,"profiles":[{"source":"angellist","url":"https://angel.co/sagar-jariwala","username":"sagar-jariwala","avatarUrl":null},{"source":"twitter","url":"https://twitter.com/sagarjariwala07","username":"sagarjariwala07","avatarUrl":null},{"source":"linkedin","url":"https://www.linkedin.com/pub/sagar-jariwala/25/215/585","username":null,"avatarUrl":null}],"lists":[],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Sagar Jariwala","relatedTo":null,"id":"bf2650f6-c0aa-428a-bcbd-3bd3cb5ef13d","birthday":null,"pictures":[{"url":"https://d2ojpxxtu63wzl.cloudfront.net/static/b64b779a75d49c5c415a9cbe00bc06ef_9ff386d04df824127e7d8c9426796664370215688aec651c4ce23daf33749e46","source":"angellist","created":1435401373478,"id":"2150cbb6dc4e0b15863d67ce3ba49f69","default":true}],"updated":1435401374002,"created":1435401374002,"profilePicture":"https://d2ojpxxtu63wzl.cloudfront.net/static/b64b779a75d49c5c415a9cbe00bc06ef_9ff386d04df824127e7d8c9426796664370215688aec651c4ce23daf33749e46","favorite":false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"work","number":"+9696595959"}],"firstName":"Jack","lastName":"Kalis","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":["ad","asd"],"profiles":[],"lists":[],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000qsohDAAQ","entityId":"003b000000qsohDAAQ","entityName":"CONTACT"}],"customFields":[],"displayName":"Jack Kalis","relatedTo":null,"id":"e275c451-f40e-4b05-a413-436b7a6b2eb2","birthday":null,"pictures":[],"updated":1433869472532,"created":1433869426897,"profilePicture":null,"favorite":false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"work","number":"+6965488693"}],"firstName":"Stuart ","lastName":"Mcgill","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":["ree"],"profiles":[],"lists":[],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000rpkqyAAA","entityId":"003b000000rpkqyAAA","entityName":"CONTACT"}],"customFields":[],"displayName":"Stuart  Mcgill","relatedTo":null,"id":"9220ddb5-bb8a-4796-bcab-d042bfba9e18","birthday":null,"pictures":[],"updated":1434557101055,"created":1434557033093,"profilePicture":null,"favorite":false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"mobile","number":"+49558955865"},{"type":"other","number":"+78957689596"}],"firstName":"Adwait","lastName":"Mike123457","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":["test12345","test12335","mike","testqqq","admin"],"profiles":[],"lists":[],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Adwait Mike123457","relatedTo":null,"id":"edfbf42d-884c-4d4a-b568-db1d1af96cfb","birthday":null,"pictures":[],"updated":1433865971976,"created":1432747724117,"profilePicture":null,"favorite":false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":true,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":[{"type":"HOME","email":"adwait@interact.io"}],"phoneNumbers":[{"type":"home","number":"+96968124"}],"firstName":"Mark","lastName":"Nicholas","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":[],"tags":["test12345","face","test","link"],"profiles":[],"lists":[],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000qpmCxAAI","entityId":"003b000000qpmCxAAI","entityName":"CONTACT"}],"customFields":[],"displayName":"Mark Nicholas","relatedTo":[{"id":"a08e59b6-7181-4747-9fd6-35b7e6182aa9","type":"COMPANY","displayName":"Interact","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","privacy":"PUBLIC"}],"id":"a4dbff3b-73a9-46a7-8d01-2aab1c5db5fa","birthday":null,"pictures":[],"updated":1435151862946,"created":1433174114098,"profilePicture":null,"favorite":false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"work","number":"+998956523"}],"firstName":"Harry","lastName":"Parker","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":null,"profiles":[],"lists":[{"active":true,"currentStatus":"Open","updated":1435163853439,"name":"First","listId":207}],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000qrNNdAAM","entityId":"003b000000qrNNdAAM","entityName":"CONTACT"}],"customFields":[],"displayName":"Harry Parker","relatedTo":null,"id":"4e27c1af-f7d8-4b3c-b1ac-10e80443a328","birthday":null,"pictures":[],"updated":1435163853514,"created":1433496576443,"profilePicture":null,"favorite":false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":null,"firstName":"Mike","lastName":"Private","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZTPDTwruSgQS3qXFDL","websites":null,"tags":null,"profiles":[],"lists":[{"active":true,"currentStatus":"Open","updated":1435163853467,"name":"First","listId":207}],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Mike Private","relatedTo":[{"id":"47776e92-1b18-483f-84cc-2189742531b1","type":"COMPANY","displayName":"Adwait Inc","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","privacy":"PUBLIC"}],"id":"eed89fcb-1869-42c0-9060-dcd5be7b0a6b","birthday":null,"pictures":[],"updated":1435163853514,"created":1432747935467,"profilePicture":null,"favorite":false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":[{"type":"work","number":"+998959595"}],"firstName":"RestAPI","lastName":"RESTAPI","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":["tesssss","ljk"],"profiles":[],"lists":[{"active":true,"currentStatus":"Open","updated":1435163853490,"name":"First","listId":207}],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000qr9pmAAA","entityId":"003b000000qr9pmAAA","entityName":"CONTACT"}],"customFields":[],"displayName":"RestAPI RESTAPI","relatedTo":null,"id":"75289a41-ccb1-45a2-a50f-e7e79e15422d","birthday":null,"pictures":[],"updated":1435163853514,"created":1433437382654,"profilePicture":null,"favorite":false},{"privacy":"PRIVATE","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":"","addresses":null,"emails":[{"type":"other","email":"admin@test.com"}],"phoneNumbers":null,"firstName":"Admin","lastName":"Test","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":["test","me"],"profiles":[],"lists":[{"active":true,"currentStatus":"Open","updated":1435163853514,"name":"First","listId":207}],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Admin Test","relatedTo":null,"id":"af3b3427-9eed-49a3-951a-0beecad60706","birthday":null,"pictures":[],"updated":1435163853514,"created":1432747695639,"profilePicture":null,"favorite":false},{"privacy":"PUBLIC","contactType":"COMPANY","companyName":"Adwait Inc","enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":null,"firstName":null,"lastName":null,"title":null,"middleName":null,"suffix":null,"salutation":null,"creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":null,"profiles":[],"lists":[],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Adwait Inc","relatedTo":[{"id":"eed89fcb-1869-42c0-9060-dcd5be7b0a6b","type":"PERSON","displayName":"Mike Private","creatorId":"usr_0vCSZTPDTwruSgQS3qXFDL","privacy":"PUBLIC"}],"id":"47776e92-1b18-483f-84cc-2189742531b1","birthday":null,"pictures":[{"url":"https://pictures.mycontacts.io/eaafc34f-6a2c-448c-b1f7-5b86c0371079.jpg","source":"interact","created":1435587981097,"id":"41431a81473a0c20273b656af670844b","default":true}],"updated":1435588220511,"created":1432747898125,"profilePicture":"https://pictures.mycontacts.io/eaafc34f-6a2c-448c-b1f7-5b86c0371079.jpg","favorite":false},{"privacy":"PUBLIC","contactType":"COMPANY","companyName":"Interact","enrich":true,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":"","addresses":null,"emails":null,"phoneNumbers":null,"firstName":null,"lastName":null,"title":null,"middleName":null,"suffix":null,"salutation":null,"creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":null,"profiles":[],"lists":[],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Interact","relatedTo":[{"id":"a4dbff3b-73a9-46a7-8d01-2aab1c5db5fa","type":"PERSON","displayName":"Mark Nicholas","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","privacy":"PUBLIC"}],"id":"a08e59b6-7181-4747-9fd6-35b7e6182aa9","birthday":null,"pictures":[{"url":"https://pictures.mycontacts.io/c4377ada-1fa6-42f2-a87d-566016ec160b.jpg","source":"interact","created":1435588401089,"id":"43e995476189eb7f471f9e9fb11f7db5","default":true}],"updated":1435588401089,"created":1433174460828,"profilePicture":"https://pictures.mycontacts.io/c4377ada-1fa6-42f2-a87d-566016ec160b.jpg","favorite":false}],"limit":15,"offset":0,"count":18}
+
+   
+###  Add a person/company contact [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+    + Body
+    
+            {"phoneNumbers":[{"number":"+4978798599279","type":"work"}],"emails":[{"email":"tony@interact.io","type":"work"}],"websites":[],"contactType":"PERSON","firstName":"Tony","lastName":"Harris","relatedTo":["id":"a08e59b6-7181-4747-9fd6-35b7e6182aa9"],"title":"HOD"}
+            
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {"code":201,"devmsg":"success","entity":{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":null,"addresses":null,"emails":[{"type":"work","email":"tony@interact.io"}],"phoneNumbers":[{"type":"work","number":"+4978798599279"}],"firstName":"Tony","lastName":"Harris","title":"HOD","middleName":null,"suffix":null,"salutation":null,"creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":[],"tags":null,"profiles":[],"lists":[],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Tony Harris","relatedTo":[{"id":"a08e59b6-7181-4747-9fd6-35b7e6182aa9","type":"COMPANY","displayName":"Interact","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","privacy":"PUBLIC"}],"id":"82944a5a-23b0-493a-a6f1-96bf27fd8bc3","birthday":null,"pictures":[],"updated":1436951114060,"created":1436951114060,"profilePicture":null,"favorite":false}}
+            
+
+#  Group Contact Forms API			
+			
+## /forms/contacts
+
+### Add a contact - API Key [POST]
+
++ Request (application/json)
+    + Headers
+
+            Accept: application/json
+            Authorization: apikey mdAevfAXPZ9XMlqVt72QLCSineBsa3dVn8A8Pt2vOfS
+            
+    + Body
+    
+               {"phoneNumbers":[{"number":"+4978798599279","type":"work"}],"emails":[{"email":"tony@interact.io","type":"work"}],"websites":[],"contactType":"PERSON","firstName":"Tony","lastName":"Harris","relatedTo":["id":"a08e59b6-7181-4747-9fd6-35b7e6182aa9"],"title":"HOD"}
+            
+
++ Response 201 (application/json)
+
+    + Body
+    
+                {"code":201,"devmsg":"success","entity":{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":null,"addresses":null,"emails":[{"type":"work","email":"tony@interact.io"}],"phoneNumbers":[{"type":"work","number":"+4978798599279"}],"firstName":"Tony","lastName":"Harris","title":"HOD","middleName":null,"suffix":null,"salutation":null,"creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":[],"tags":null,"profiles":[],"lists":[],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Tony Harris","relatedTo":[{"id":"a08e59b6-7181-4747-9fd6-35b7e6182aa9","type":"COMPANY","displayName":"Interact","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","privacy":"PUBLIC"}],"id":"82944a5a-23b0-493a-a6f1-96bf27fd8bc3","birthday":null,"pictures":[],"updated":1436951114060,"created":1436951114060,"profilePicture":null,"favorite":false}}
+
+				
+#  Group Contact Bulk API
+            
+## /contacts/bulk
+            
+### Add contacts in bulk [POST]
+   
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+    + Body
+    
+            [{"profilePictureBase64":"R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=","contactType":"PERSON","lastName":"lastName1","firstName":"First1",
+                "phoneNumbers": [{"type": "reception","number": "+4978978978902"}]},{"profilePictureBase64":"R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=","contactType":"PERSON","lastName":"lastName2A","firstName":"First2",
+                "phoneNumbers": [{"type": "reception","number": "+4978978978903"}]},{"profilePictureBase64":"R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=","contactType":"PERSON","lastName":"lastName32A","firstName":"First3",
+                "phoneNumbers": [{"type": "reception","number": "+4978978978904"}]},{"profilePictureBase64":"R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=","contactType":"PERSON","lastName":"lastName23A","firstName":"First4",
+                "phoneNumbers": [{"type": "reception","number": "+4978978978905"}]},{"profilePictureBase64":"R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=","contactType":"PERSON","lastName":"lastName34A","firstName":"First5",
+                "phoneNumbers": [{"type": "reception","number": "+4978978978906"}]}]      
+
++ Response 201 (application/json)
+
+    + Body
+    
+            {"code":201,"devmsg":"success","entity":[{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":null,"addresses":null,"emails":null,"phoneNumbers":[{"type":"reception","number":"+4978978978902"}],"firstName":"First1","lastName":"lastName1","title":null,"middleName":null,"suffix":null,"salutation":null,"websites":null,"tags":null,"profiles":null,"lists":{},"profileUrl":null,"displayName":"First1 lastName1","relatedTo":null,"id":"30bfdf2b-a093-4bbb-98a3-4b9d55f92ef8","birthday":null,"pictures":[{"url":"https://pictures-staging.mycontacts.io/e12d5d34-a1a1-4007-9080-5796a661a2b6.jpg","source":"interact","created":1426605461513,"id":"4b4dd3e777f3bc32b5afd4fa196e816d","default":true}],"updated":1426605458038,"created":1426605458036,"profilePicture":"https://pictures-staging.mycontacts.io/e12d5d34-a1a1-4007-9080-5796a661a2b6.jpg","favorite": false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":null,"addresses":null,"emails":null,"phoneNumbers":[{"type":"reception","number":"+4978978978903"}],"firstName":"First2","lastName":"lastName2A","title":null,"middleName":null,"suffix":null,"salutation":null,"websites":null,"tags":null,"profiles":null,"lists":{},"profileUrl":null,"displayName":"First2 lastName2A","relatedTo":null,"id":"82cf6a5e-36df-4813-a9ad-2755493465c2","birthday":null,"pictures":[{"url":"https://pictures-staging.mycontacts.io/1ee34f5a-b00c-49ba-844f-ab1d1f9c4347.jpg","source":"interact","created":1426605461514,"id":"3ca3a245a33efb99e07045f3471949eb","default":true}],"updated":1426605458038,"created":1426605458036,"profilePicture":"https://pictures-staging.mycontacts.io/1ee34f5a-b00c-49ba-844f-ab1d1f9c4347.jpg","favorite": false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":null,"addresses":null,"emails":null,"phoneNumbers":[{"type":"reception","number":"+4978978978904"}],"firstName":"First3","lastName":"lastName32A","title":null,"middleName":null,"suffix":null,"salutation":null,"websites":null,"tags":null,"profiles":null,"lists":{},"profileUrl":null,"displayName":"First3 lastName32A","relatedTo":null,"id":"d3cd7484-2430-4fa3-b6da-5ee2789e4630","birthday":null,"pictures":[{"url":"https://pictures-staging.mycontacts.io/b6d5c864-fa46-46b0-99b8-88a6f4a8045d.jpg","source":"interact","created":1426605461515,"id":"2afb4da32c6fb656561d7232602159eb","default":true}],"updated":1426605458038,"created":1426605458037,"profilePicture":"https://pictures-staging.mycontacts.io/b6d5c864-fa46-46b0-99b8-88a6f4a8045d.jpg","favorite": false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":null,"addresses":null,"emails":null,"phoneNumbers":[{"type":"reception","number":"+4978978978905"}],"firstName":"First4","lastName":"lastName23A","title":null,"middleName":null,"suffix":null,"salutation":null,"websites":null,"tags":null,"profiles":null,"lists":{},"profileUrl":null,"displayName":"First4 lastName23A","relatedTo":null,"id":"c553e86c-c0cd-449c-877e-9440f43c5171","birthday":null,"pictures":[{"url":"https://pictures-staging.mycontacts.io/3921d2c7-f56f-4b65-85d8-728f2cb852ca.jpg","source":"interact","created":1426605461516,"id":"006c13a55927442e88cd5de208452a36","default":true}],"updated":1426605458039,"created":1426605458037,"profilePicture":"https://pictures-staging.mycontacts.io/3921d2c7-f56f-4b65-85d8-728f2cb852ca.jpg","favorite": false},{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":false,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":null,"addresses":null,"emails":null,"phoneNumbers":[{"type":"reception","number":"+4978978978906"}],"firstName":"First5","lastName":"lastName34A","title":null,"middleName":null,"suffix":null,"salutation":null,"websites":null,"tags":null,"profiles":null,"lists":{},"profileUrl":null,"displayName":"First5 lastName34A","relatedTo":null,"id":"b63680b7-94db-44ce-8352-911ec36f8f19","birthday":null,"pictures":[{"url":"https://pictures-staging.mycontacts.io/b44c0e00-f62f-494d-b37f-9980afb67f56.jpg","source":"interact","created":1426605461517,"id":"cb6f52a1eaa40e78b072cf6b5af2b589","default":true}],"updated":1426605458039,"created":1426605458037,"profilePicture":"https://pictures-staging.mycontacts.io/b44c0e00-f62f-494d-b37f-9980afb67f56.jpg","favorite": false}]}
+            
+#  Group /contacts/{id}
+			
+## /contacts/{id}
+
+### Get details of a contact [GET]
+
++ Parameters
+    + id (required, integer, `82944a5a-23b0-493a-a6f1-96bf27fd8bc3`) ... Example Contact Id
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+            
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":false,"clientId":null,"source":"","addresses":null,"emails":[{"type":"work","email":"tony@interact.io"}],"phoneNumbers":[{"type":"work","number":"+4978798599279"}],"firstName":"Tony","lastName":"Harris","title":"HOD","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":null,"profiles":[],"lists":[],"profileUrl":null,"metaRefs":null,"customFields":[],"displayName":"Tony Harris","relatedTo":[{"id":"a08e59b6-7181-4747-9fd6-35b7e6182aa9","type":"COMPANY","displayName":"Interact","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","privacy":"PUBLIC"}],"id":"82944a5a-23b0-493a-a6f1-96bf27fd8bc3","birthday":null,"pictures":[],"updated":1436951114060,"created":1436951114060,"profilePicture":null,"favorite":false}
+
+### Update a person/company contact [PUT]
+
++ Parameters
+    + id (required, integer, `9220ddb5-bb8a-4796-bcab-d042bfba9e18`) ... Example Contact Id
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+    + Body
+    
+             {"id":"9220ddb5-bb8a-4796-bcab-d042bfba9e18","$promise":{},"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":[{"type":"work","email":"stuart@test.com"}],"phoneNumbers":[{"type":"work","number":"+6965488693"}],"firstName":"Stuart ","lastName":"Mcgill","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":["ree"],"profiles":[],"lists":[],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000rpkqyAAA","entityId":"003b000000rpkqyAAA","entityName":"CONTACT"}],"customFields":[],"displayName":"Stuart  Mcgill","relatedTo":null,"birthday":null,"pictures":[],"updated":1436952776104,"created":1434557033093,"profilePicture":null,"favorite":false}
+
++ Response 200 (application/json)
+
+    + Body
+    
+                {"code":200,"devmsg":"success","entity":{"privacy":"PUBLIC","contactType":"PERSON","companyName":null,"enrich":true,"sfdcDuplicate":false,"sfdcEnrich":true,"clientId":null,"source":"","addresses":null,"emails":[{"type":"work","email":"stuart@test.com"}],"phoneNumbers":[{"type":"work","number":"+6965488693"}],"firstName":"Stuart ","lastName":"Mcgill","title":"","middleName":"","suffix":"","salutation":"","creatorId":"usr_0vCSZPo6N0n0kGnduVmQNu","websites":null,"tags":["ree"],"profiles":[],"lists":[],"profileUrl":null,"metaRefs":[{"systemId":"SFDC","systemURL":"https://eu2.salesforce.com/003b000000rpkqyAAA","entityId":"003b000000rpkqyAAA","entityName":"CONTACT"}],"customFields":[],"displayName":"Stuart  Mcgill","relatedTo":null,"id":"9220ddb5-bb8a-4796-bcab-d042bfba9e18","birthday":null,"pictures":[],"updated":1436952776104,"created":1434557033093,"profilePicture":null,"favorite":false}}
+
+### Delete a contact [DELETE]
+
++ Parameters
+    + id (required, integer, `4541262b-e043-45cd-bfcb-394d4abdd34d`) ... Example Contact Id
+    
+    
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+            authToken : gfUH43trfdkjg34
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {"code":200,"devmsg":"success"}
+            
